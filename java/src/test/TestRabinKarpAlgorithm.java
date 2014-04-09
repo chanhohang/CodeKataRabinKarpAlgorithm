@@ -1,5 +1,7 @@
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,7 +34,7 @@ public class TestRabinKarpAlgorithm {
 
 	private String inputStr;
 	private String pattern;
-
+	
 	public TestRabinKarpAlgorithm(String inputStr, String pattern) {
 		this.inputStr = inputStr;
 		this.pattern = pattern;
@@ -48,7 +50,28 @@ public class TestRabinKarpAlgorithm {
 
 	@Test
 	public void testRollingHashStringSearch() {
-		RabinKarpAlgorithm algo = new RabinKarpAlgorithm(new RollingHash());
+		
+		int prime = 3;
+		HashHelper rolling =(int currentHash, String input, int pos, int length) -> {
+			
+			if (currentHash == 0)
+			{
+				for (int i = pos; i< pos+length;i++)
+				{
+					currentHash += input.charAt(i) * Math.pow(prime, i -pos);
+				}
+			}
+			else
+			{
+				currentHash -= input.charAt(pos-1);
+				currentHash /= prime;
+				currentHash += input.charAt(pos+length-1) * Math.pow(prime, length-1);
+			}
+			
+			return currentHash;
+		};
+		
+		RabinKarpAlgorithm algo = new RabinKarpAlgorithm(rolling);
 		int expectedResult = inputStr.indexOf(pattern);
 		Assert.assertEquals(expectedResult, algo.search(inputStr, pattern));
 

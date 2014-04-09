@@ -4,13 +4,19 @@ public class RabinKarpAlgorithm {
 	
 	public RabinKarpAlgorithm()
 	{
-		this.hashFunction = new HashHelper() {
+		this.hashFunction = (int currentHash, String input, int pos, int length) -> {
+			return input.substring(pos, pos+length).hashCode();
 			
-			@Override
-			public int hash(int currentHash, String input, int pos, int length) {
-				return input.substring(pos, pos+length).hashCode();
-			}
 		};
+				
+				
+//				new HashHelper() {
+//			
+//			@Override
+//			public int hash(int currentHash, String input, int pos, int length) {
+//				return input.substring(pos, pos+length).hashCode();
+//			}
+//		};
 	}
 	
 	public RabinKarpAlgorithm(HashHelper hashFunction)
